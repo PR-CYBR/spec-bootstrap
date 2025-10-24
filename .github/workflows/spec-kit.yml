@@ -1,11 +1,9 @@
 name: Spec-Kit Validation
-
 on:
   push:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
-
 permissions:
   contents: read
 
@@ -13,87 +11,49 @@ jobs:
   validate-specs:
     name: Validate Specification Files
     runs-on: ubuntu-latest
-    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
       - name: Check required files exist
         run: |
           echo "Checking for required Spec-Kit files..."
-          
           required_files=(
             ".specify/constitution.md"
             ".specify/spec.md"
             ".specify/plan.md"
             ".specify/tasks"
           )
-          
           missing_files=()
           for file in "${required_files[@]}"; do
             if [ ! -e "$file" ]; then
               missing_files+=("$file")
             fi
           done
-          
           if [ ${#missing_files[@]} -ne 0 ]; then
             echo "❌ Missing required files:"
             printf '%s\n' "${missing_files[@]}"
             exit 1
           fi
-          
           echo "✅ All required files exist"
-      
       - name: Validate Markdown syntax
-        uses: DavidAnson/markdownlint-action@v1
+        uses: DavidAnson/markdownlint-cli2-action@v20
         with:
-          files: |
-            .specify/**/*.md
-            README.md
-          config: |
-            {
-              "default": true,
-              "MD013": false,
-              "MD033": false,
-              "MD041": false
-            }
-      
+          globs: |
+            **/*.md
       - name: Check for broken links
         uses: gaurav-nelson/github-action-markdown-link-check@v1
         with:
-          use-quiet-mode: 'yes'
-          use-verbose-mode: 'no'
-          config-file: '.github/workflows/markdown-link-check-config.json'
-          file-path: |
-            .specify/constitution.md
-            .specify/spec.md
-            .specify/plan.md
-            README.md
-        continue-on-error: true
-      
+          use-quiet-mode: "yes"
+          use-verbose-mode: "yes"
+          config-file: .github/markdown-link-check-config.json
       - name: List tasks
         run: |
-          echo "Current tasks in .specify/tasks/:"
+          echo "Listing Spec-Kit tasks..."
           if [ -d ".specify/tasks" ]; then
-            task_count=$(find .specify/tasks -type f -name "*.md" | wc -l)
-            if [ "$task_count" -eq 0 ]; then
-              echo "⚠️  No task files found (this is OK for a new project)"
-            else
-              find .specify/tasks -type f -name "*.md" | sort | while read task; do
-                echo "  - $(basename "$task")"
-              done
-            fi
+            find .specify/tasks -type f -name "*.md"
           else
-            echo "❌ Tasks directory not found"
-            exit 1
+            echo "No tasks directory found."
           fi
-      
-      - name: Validation summary
+      - name: Summary
         run: |
-          echo "================================"
-          echo "Spec-Kit Validation Summary"
-          echo "================================"
-          echo "✅ Required structure validated"
-          echo "✅ Markdown syntax checked"
-          echo "✅ Tasks directory verified"
-          echo "================================"
+          echo "✅ Specification files are valid and tasks are listed."
