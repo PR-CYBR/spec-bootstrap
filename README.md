@@ -1,3 +1,5 @@
+[![Test Branch Workflow](https://github.com/PR-CYBR/spec-bootstrap/actions/workflows/test.yml/badge.svg?branch=test)](https://github.com/PR-CYBR/spec-bootstrap/actions/workflows/test.yml)  
+**Branch Purpose:** The `test` branch is used for integration testing and validation. Changes from the `dev` branch are merged here for testing before moving to the `stage` branch.
 # Spec-Bootstrap  
 [![Spec-Kit Validation](https://github.com/PR-CYBR/spec-bootstrap/actions/workflows/spec-kit.yml/badge.svg)](https://github.com/PR-CYBR/spec-bootstrap/actions/workflows/spec-kit.yml)  
 
