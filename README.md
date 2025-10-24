@@ -31,6 +31,15 @@ This project will be released under the [MIT License](LICENSE).
   git clone https://github.com/PR-CYBR/spec-bootstrap.git  
   cd spec-bootstrap  
   ```  
+## Automated Provisioning  
+During initial provisioning of a new repository derived from this template, multiple draft pull requests are created to add the specification, plan and workflow files. Normally these PRs require manual review because branch protection rules on the default branch prevent automation from merging. To support fully autonomous initialization while preserving safety, this template includes an initial provisioning workflow (`initial-provision.yml`).  
+This workflow runs only once — when the repository has no prior commits or when triggered with `is_initial_provision` set to `true`. It will:  
+- Detect that the repository is in a bootstrap state.  
+- Temporarily disable branch protection on the default branch using the GitHub API.  
+- Mark any draft bootstrap pull requests as ready for review and merge them automatically.  
+- Reapply the previous branch protection settings immediately after the merges.  
+- Add a `bootstrap-complete` tag or commit annotation for auditability.  
+If automation is disabled or fails, you may still perform the first merge manually by approving the draft PRs. After the initial provisioning completes, the regular CI/CD workflows and branch protections govern subsequent development as usual. 
 2. **Review the Constitution**  
   ```bash  
   cat .specify/constitution.md  
