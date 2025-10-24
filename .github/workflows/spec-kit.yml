@@ -1,12 +1,12 @@
 name: Spec-Kit Validation
 on:
   push:
-    branches: [ main, master ]
+    branches: [main, master]
   pull_request:
-    branches: [ main, master ]
+    branches: [main, master]
 permissions:
-  contents:
-    read
+  contents: read
+
 jobs:
   validate-specs:
     name: Validate Specification Files
@@ -38,6 +38,7 @@ jobs:
       - name: Validate Markdown syntax
         uses: DavidAnson/markdownlint-cli2-action@v20
         with:
+          config: .markdownlint-cli2.yaml
           globs: |
             **/*.md
       - name: Check for broken links
