@@ -1,3 +1,5 @@
+[![Dev Branch Workflow](https://github.com/PR-CYBR/spec-bootstrap/actions/workflows/dev.yml/badge.svg?branch=dev)](https://github.com/PR-CYBR/spec-bootstrap/actions/workflows/dev.yml)  
+**Branch Purpose:** The `dev` branch is used for active development and experimentation. New features and updates are developed and tested here before being promoted to the `test` and `stage` branches.
 # Spec-Bootstrap  
 [![Spec-Kit Validation](https://github.com/PR-CYBR/spec-bootstrap/actions/workflows/spec-kit.yml/badge.svg)](https://github.com/PR-CYBR/spec-bootstrap/actions/workflows/spec-kit.yml)  
 
