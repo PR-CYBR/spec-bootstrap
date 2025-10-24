@@ -1,3 +1,5 @@
+[![Spec-Kit Validation](https://github.com/PR-CYBR/spec-bootstrap/actions/workflows/spec-kit.yml/badge.svg?branch=main)](https://github.com/PR-CYBR/spec-bootstrap/actions/workflows/spec-kit.yml)  
+**Branch Purpose:** The `main` branch is the stable baseline representing production-ready code. All changes integrated through the CI/CD pipeline eventually land here.
 # Spec-Bootstrap  
 [![Spec-Kit Validation](https://github.com/PR-CYBR/spec-bootstrap/actions/workflows/spec-kit.yml/badge.svg)](https://github.com/PR-CYBR/spec-bootstrap/actions/workflows/spec-kit.yml)  
 
