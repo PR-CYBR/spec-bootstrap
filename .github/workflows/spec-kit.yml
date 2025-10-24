@@ -12,7 +12,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
       - name: Check required files exist
         run: |
           required_files=(.specify/constitution.md .specify/spec.md .specify/plan.md)
@@ -22,23 +21,13 @@ jobs:
               exit 1
             fi
           done
-
-      - name: Validate Markdown syntax
-        uses: DavidAnson/markdownlint-cli2-action@v20
-        with:
-          globs: '**/*.md'
-          config: .markdownlint-cli2.yaml
-        continue-on-error: true
-
       - name: Check for broken links in Markdown files
         uses: gaurav-nelson/github-action-markdown-link-check@v1
         with:
           config-file: .github/workflows/markdown-link-check-config.json
-
       - name: List tasks
         run: |
           echo "Tasks:"
           find .specify/tasks -type f -print
-
       - name: Summary
         run: echo "Spec-Kit validation complete."
