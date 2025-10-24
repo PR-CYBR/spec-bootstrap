@@ -1,3 +1,5 @@
+[![Stage Branch Workflow](https://github.com/PR-CYBR/spec-bootstrap/actions/workflows/stage.yml/badge.svg?branch=stage)](https://github.com/PR-CYBR/spec-bootstrap/actions/workflows/stage.yml)  
+**Branch Purpose:** The `stage` branch is used for pre-production staging. Final checks are performed here before promoting to the `prod` branch.
 # Spec-Bootstrap  
 [![Spec-Kit Validation](https://github.com/PR-CYBR/spec-bootstrap/actions/workflows/spec-kit.yml/badge.svg)](https://github.com/PR-CYBR/spec-bootstrap/actions/workflows/spec-kit.yml)  
 
