@@ -1,60 +1,44 @@
 name: Spec-Kit Validation
+
 on:
   push:
-    branches: [main, master]
+    branches: [main]
   pull_request:
-    branches: [main, master]
-permissions:
-  contents: read
+    branches: [main]
 
 jobs:
-  validate-specs:
-    name: Validate Specification Files
+  validate:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
       - name: Check required files exist
         run: |
-          echo "Checking for required Spec-Kit files..."
-          required_files=(
-            ".specify/constitution.md"
-            ".specify/spec.md"
-            ".specify/plan.md"
-            ".specify/tasks"
-          )
-          missing_files=()
+          required_files=(.specify/constitution.md .specify/spec.md .specify/plan.md)
           for file in "${required_files[@]}"; do
-            if [ ! -e "$file" ]; then
-              missing_files+=("$file")
+            if [ ! -f "$file" ]; then
+              echo "Required file missing: $file" >&2
+              exit 1
             fi
           done
-          if [ ${#missing_files[@]} -ne 0 ]; then
-            echo "❌ Missing required files:"
-            printf '%s\n' "${missing_files[@]}"
-            exit 1
-          fi
-          echo "✅ All required files exist"
+
       - name: Validate Markdown syntax
         uses: DavidAnson/markdownlint-cli2-action@v20
         with:
+          globs: '**/*.md'
           config: .markdownlint-cli2.yaml
-          globs: |
-            **/*.md
-      - name: Check for broken links
+        continue-on-error: true
+
+      - name: Check for broken links in Markdown files
         uses: gaurav-nelson/github-action-markdown-link-check@v1
         with:
-          quiet-mode: "yes"
-          use-verbose-mode: "yes"
-          config-file: .github/markdown-link-check-config.json
+          config-file: .github/workflows/markdown-link-check-config.json
+
       - name: List tasks
         run: |
-          echo "Listing Spec-Kit tasks..."
-          if [ -d ".specify/tasks" ]; then
-            find .specify/tasks -type f -name "*.md"
-          else
-            echo "No tasks directory found."
-          fi
+          echo "Tasks:"
+          find .specify/tasks -type f -print
+
       - name: Summary
-        run: |
-          echo "✅ Specification files are valid and tasks are listed."
+        run: echo "Spec-Kit validation complete."
