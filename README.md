@@ -1,3 +1,5 @@
+[![Pages Branch Workflow](https://github.com/PR-CYBR/spec-bootstrap/actions/workflows/pages.yml/badge.svg?branch=pages)](https://github.com/PR-CYBR/spec-bootstrap/actions/workflows/pages.yml)  
+**Branch Purpose:** The `pages` branch is used for generating and deploying the project's documentation or static site via GitHub Pages.
 # Spec-Bootstrap  
 [![Spec-Kit Validation](https://github.com/PR-CYBR/spec-bootstrap/actions/workflows/spec-kit.yml/badge.svg)](https://github.com/PR-CYBR/spec-bootstrap/actions/workflows/spec-kit.yml)  
 
