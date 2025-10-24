@@ -1,3 +1,5 @@
+[![Production Branch Workflow](https://github.com/PR-CYBR/spec-bootstrap/actions/workflows/prod.yml/badge.svg?branch=prod)](https://github.com/PR-CYBR/spec-bootstrap/actions/workflows/prod.yml)  
+**Branch Purpose:** The `prod` branch holds production-ready code and is deployed to production environments. Only thoroughly tested changes from the `stage` branch are merged here.
 # Spec-Bootstrap  
 [![Spec-Kit Validation](https://github.com/PR-CYBR/spec-bootstrap/actions/workflows/spec-kit.yml/badge.svg)](https://github.com/PR-CYBR/spec-bootstrap/actions/workflows/spec-kit.yml)  
 
