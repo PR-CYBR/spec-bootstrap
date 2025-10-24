@@ -1,12 +1,14 @@
 name: Auto PR from main to stage
-
 on:
   workflow_run:
     workflows: ["Spec-Kit Validation"]
-    branches: ["main"]
+    branches:
+      - main
     types:
       - completed
-
+permissions:
+  pull-requests: write
+  contents: read
 jobs:
   create-pull-request:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
