@@ -5,27 +5,32 @@ A language-agnostic Spec-Kit template for spec-driven development. This template
 ## Quick Start
 
 1. **Clone or Fork this repository**
+
    ```bash
    git clone https://github.com/PR-CYBR/spec-bootstrap.git
    cd spec-bootstrap
    ```
 
 2. **Review the Constitution**
+
    ```bash
    cat .specify/constitution.md
    ```
 
 3. **Explore the Specifications**
+
    ```bash
    cat .specify/spec.md
    ```
 
 4. **Check the Implementation Plan**
+
    ```bash
    cat .specify/plan.md
    ```
 
 5. **View Tasks**
+
    ```bash
    ls -la .specify/tasks/
    ```
@@ -43,6 +48,7 @@ cat .specify/constitution.md
 ```
 
 This displays the foundational principles that guide the project, including:
+
 - Specification-driven development approach
 - Language-agnostic philosophy
 - Incremental planning methodology
@@ -57,6 +63,7 @@ cat .specify/spec.md
 ```
 
 This shows:
+
 - Directory structure requirements
 - Command specifications
 - Workflow requirements
@@ -72,6 +79,7 @@ cat .specify/plan.md
 ```
 
 This displays:
+
 - Project phases and milestones
 - Task organization approach
 - Development workflow guidance
@@ -94,7 +102,7 @@ find .specify/tasks -name "*.md" -type f
 
 ## Directory Structure
 
-```
+```text
 spec-bootstrap/
 ├── .github/
 │   └── workflows/
@@ -119,6 +127,7 @@ The `.github/workflows/spec-kit.yml` workflow automatically:
 - ✅ Lists current tasks
 
 This workflow runs on:
+
 - Pushes to `main` or `master` branch
 - Pull requests targeting `main` or `master` branch
 
@@ -222,6 +231,7 @@ Modify this README to describe your specific project, keeping the Spec-Kit comma
 ## Why Spec-Kit?
 
 **Specification-driven development** ensures:
+
 - 📋 Clear requirements before coding begins
 - 🎯 Focused, purposeful development
 - 📚 Living documentation that stays current
@@ -229,6 +239,7 @@ Modify this README to describe your specific project, keeping the Spec-Kit comma
 - ✅ Measurable progress and completion criteria
 
 **Language-agnostic approach** provides:
+
 - 🔧 Flexibility to choose the right tools
 - 🔄 Easy migration between technologies
 - 👥 Consistent process across different stacks
@@ -251,6 +262,7 @@ This template is provided as-is for use in any project. Customize freely to meet
 ## Support
 
 For questions or suggestions about the Spec-Kit framework:
+
 - Review the specification files in `.specify/`
 - Check the example task template
 - Examine the automation workflow
