@@ -5,8 +5,8 @@ on:
   pull_request:
     branches: [ main, master ]
 permissions:
-  contents: read
-
+  contents:
+    read
 jobs:
   validate-specs:
     name: Validate Specification Files
@@ -43,7 +43,7 @@ jobs:
       - name: Check for broken links
         uses: gaurav-nelson/github-action-markdown-link-check@v1
         with:
-          use-quiet-mode: "yes"
+          quiet-mode: "yes"
           use-verbose-mode: "yes"
           config-file: .github/markdown-link-check-config.json
       - name: List tasks
