@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [impl]
 
+permissions:
+  contents: read
+
 jobs:
   impl_job:
     runs-on: ubuntu-latest
