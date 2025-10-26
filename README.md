@@ -15,6 +15,13 @@ To adopt Spec Kit in an existing repository, merge this repository into your p
 ## Run Status Indicator  
 The badge above reflects the current status of the Spec Kit validation workflow on the `main` branch. It runs checks on required files, markdown syntax and link validation, and summarises tasks. A passing badge means the template structure is intact.  
 
+## Branching Strategy  
+This repository implements a comprehensive branching scheme to support specification-driven development. See [BRANCHING.md](BRANCHING.md) for detailed documentation on:  
+- Purpose and usage of each branch (spec, plan, design, impl, dev, main, test, stage, prod, pages, gh-pages, codex)  
+- Automated pull request workflows between branches  
+- Branch protection rules and best practices  
+- Development lifecycle flow from specifications through production  
+
 ## AI Driven Development  
 This repository is designed to be used not only by humans but also by AI coding agents. When using an AI agent to scaffold or extend your project:  
 - **Start with the spec** – Agents should read and, if necessary, refine the documents in `.specify/constitution.md`, `.specify/spec.md` and `.specify/plan.md` before writing any code.  

@@ -40,11 +40,22 @@ Add your chosen technology stack:
 - [ ] Extend `spec-kit.yml` workflow with stack-specific checks
 
 ## Phase 4: Development Workflow
-**Status**: ⏳ Pending (User Action Required)
+**Status**: ✅ Complete (Branching Strategy) / ⏳ Pending (Other Items)
 
 Establish development practices:
 
-- [ ] Define branching strategy
+- [x] Define branching strategy (see [BRANCHING.md](../BRANCHING.md))
+  - Specification branches: `spec` for requirements and technical specifications
+  - Planning branches: `plan` for implementation planning and task breakdown
+  - Design branches: `design` for UI/UX artifacts and design systems
+  - Implementation branches: `impl` for active development work
+  - Development branches: `dev` for feature integration
+  - Main branch: `main` as stable baseline
+  - Test branches: `test` for continuous integration
+  - Staging branches: `stage` for pre-production validation
+  - Production branches: `prod` for deployed code
+  - Documentation branches: `pages` and `gh-pages` for static sites
+  - Knowledge branches: `codex` for code examples and tutorials
 - [ ] Set up code review process
 - [ ] Configure issue templates
 - [ ] Create pull request templates
