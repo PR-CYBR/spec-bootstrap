@@ -51,6 +51,39 @@ The `.github/workflows/spec-kit.yml` workflow should:
 3. Ensure required files exist
 4. Run on pull requests and pushes to main branch
 
+### Branch-Specific Workflows
+
+Each branch in the comprehensive branching scheme has dedicated workflows:
+
+#### Specification and Planning Workflows
+- `spec.yml`: Validates specification documents in the `spec` branch
+- `plan.yml`: Validates planning documents in the `plan` branch
+- `design.yml`: Validates design artifacts in the `design` branch
+
+#### Development Workflows
+- `impl.yml`: Runs implementation-specific validation in the `impl` branch
+- `dev.yml`: Executes development tasks in the `dev` branch
+- `test.yml`: Runs comprehensive test suites in the `test` branch
+
+#### Deployment Workflows
+- `stage.yml`: Deploys to staging environment from the `stage` branch
+- `prod.yml`: Handles production deployment from the `prod` branch
+- `pages.yml`: Builds and deploys documentation from the `pages` branch
+- `gh-pages.yml`: Alternative GitHub Pages deployment from the `gh-pages` branch
+- `codex.yml`: Validates knowledge base content in the `codex` branch
+
+#### Automated Pull Request Workflows
+- `auto-pr-spec-to-plan.yml`: Promotes specifications to planning
+- `auto-pr-plan-to-impl.yml`: Promotes plans to implementation
+- `auto-pr-design-to-impl.yml`: Integrates design into implementation
+- `auto-pr-impl-to-dev.yml`: Integrates implementation into development
+- `auto-pr-dev-to-main.yml`: Promotes development to stable baseline
+- `auto-pr-main-to-stage.yml`: Promotes stable code to staging
+- `auto-pr-main-to-test.yml`: Synchronizes testing with stable code
+- `auto-pr-stage-to-prod.yml`: Promotes staging to production
+- `auto-pr-prod-to-pages.yml`: Updates documentation from production
+- `auto-pr-codex-to-pages.yml`: Publishes knowledge base to documentation
+
 ### Extensibility
 
 This template is designed to be extended with:

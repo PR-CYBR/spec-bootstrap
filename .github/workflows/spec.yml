@@ -1,0 +1,16 @@
+name: Spec Branch Workflow
+
+on:
+  push:
+    branches: [spec]
+  pull_request:
+    branches: [spec]
+
+jobs:
+  spec_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Run Spec Tasks
+        run: echo "Running tasks for spec branch"

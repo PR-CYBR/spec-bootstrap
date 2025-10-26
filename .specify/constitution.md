@@ -38,10 +38,28 @@ Automation workflows for linting, validation, and task management.
 Changes to the constitution require explicit review and approval. The constitution serves as the foundational agreement for how the project operates.  
   
 ## Adaptability  
-  
+
 This template is language‑agnostic; teams should make minimal changes when adapting the template to their specific tools.  
-  
-## Provisioning Protocol  
+
+## Branching Strategy  
+
+This repository implements a comprehensive branching scheme to support specification‑driven development:  
+
+- **Specification Branches** (`spec`): Requirements and technical specifications  
+- **Planning Branches** (`plan`): Implementation planning and task breakdown  
+- **Design Branches** (`design`): UI/UX artifacts and design systems  
+- **Implementation Branches** (`impl`): Active development work  
+- **Development Branches** (`dev`): Feature integration and testing  
+- **Main Branch** (`main`): Stable baseline for production  
+- **Test Branches** (`test`): Continuous integration and automated testing  
+- **Staging Branches** (`stage`): Pre‑production validation  
+- **Production Branches** (`prod`): Deployed production code  
+- **Documentation Branches** (`pages`, `gh-pages`): Static site hosting and documentation  
+- **Knowledge Branches** (`codex`): Code examples and knowledge base  
+
+Work flows systematically through these branches using automated pull requests. Each branch has dedicated workflows that validate changes according to the phase of development. See [BRANCHING.md](../BRANCHING.md) for complete documentation.  
+
+## Provisioning Protocol
   
 The initial bootstrap of any repository derived from this template requires special handling to allow automation while preserving security. The provisioning protocol is:  
   
