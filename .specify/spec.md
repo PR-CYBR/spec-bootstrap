@@ -16,6 +16,12 @@ This document contains the technical specifications for projects built using thi
 ├── .github/
 │   └── workflows/
 │       └── spec-kit.yml  # Automation workflow
+├── infra/                # Terraform infrastructure configuration
+│   ├── main.tf           # Main Terraform configuration
+│   ├── variables.tf      # Variable definitions
+│   ├── variables.tfvars  # Variable values template
+│   ├── providers.tf      # Provider configurations
+│   └── outputs.tf        # Output definitions
 └── README.md             # Project documentation
 ```
 
@@ -84,54 +90,38 @@ Each branch in the comprehensive branching scheme has dedicated workflows:
 - `auto-pr-prod-to-pages.yml`: Updates documentation from production
 - `auto-pr-codex-to-pages.yml`: Publishes knowledge base to documentation
 
-#### Infrastructure Workflows
-- `tfc-bootstrap.yml`: Automatically provisions and configures Terraform Cloud workspaces during initial repository setup
+### Infrastructure as Code
 
-### Terraform Cloud Sync
+All repositories derived from this template include a baseline Terraform configuration in the `infra/` directory. This provides:
 
-The template includes automated Terraform Cloud integration to streamline infrastructure provisioning:
+#### PR-CYBR Agent Standardization
+- Consistent variable schema across all PR-CYBR agents
+- Standard variables: `agent_id`, `agent_role`, `environment`, `dockerhub_user`, `notion_page_id`
+- Alignment with PR-CYBR `agent-variables.tf` specification
 
-#### Purpose
-Automatically create and configure a Terraform Cloud workspace for new repositories derived from this template.
+#### Terraform Configuration Structure
+- **main.tf**: Core infrastructure configuration with commented backend block
+- **variables.tf**: Variable definitions with validation rules
+- **variables.tfvars**: Template with placeholder values (safe to commit)
+- **providers.tf**: Provider configurations (Terraform Cloud, GitHub) ready for initialization
+- **outputs.tf**: Standardized outputs for agent identification and connection info
 
-#### Components
-1. **Workflow**: `.github/workflows/tfc-bootstrap.yml`
-   - Triggered during initial provisioning
-   - Can be manually invoked via workflow_dispatch
-   - Gracefully handles missing TFC_TOKEN with warnings
+#### Security and Best Practices
+- Sensitive values injected via environment variables (`TF_VAR_*`)
+- No secrets or environment-specific data in version control
+- Backend configuration commented out by default for safe initialization
+- Validation rules ensure data consistency
 
-2. **Script**: `scripts/tfc_sync.sh`
-   - Authenticates with Terraform Cloud API
-   - Creates or updates workspace
-   - Synchronizes variables from `infra/` directory
-   - Tags workspace with "spec-bootstrap" and repository name
-   - Generates JSON summary for auditability
+#### Initialization Workflow
+```bash
+cd infra
+terraform init -backend=false
+terraform fmt
+terraform validate
+terraform plan -input=false -var-file=variables.tfvars
+```
 
-3. **Infrastructure Baseline**: `infra/` directory
-   - `main.tf`: Terraform configuration with remote backend
-   - `variables.tf`: Variable definitions
-   - `terraform.tfvars`: Default variable values (non-sensitive)
-   - `outputs.tf`: Output definitions
-   - `README.md`: Infrastructure documentation
-
-#### Workflow Integration
-The TFC bootstrap is integrated into `initial-provision.yml`:
-- Runs after branch protection is temporarily relaxed
-- Executes after bootstrap PRs are merged
-- Completes before branch protection is reinstated
-- Requires `TFC_TOKEN` secret for API authentication
-
-#### Variable Synchronization
-Variables are synchronized following these conventions:
-- Variables from `variables.tf` → `terraform` category in TFC
-- `TF_VAR_*` environment variables → `env` category in TFC
-- Sensitive variables marked with `sensitive = true` are properly protected
-- Descriptions from Terraform files are preserved in TFC
-
-#### Security
-- API tokens stored as GitHub Secrets (never in code)
-- Sensitive variable values managed in TFC, not in repository
-- Workspace access controlled via TFC organization permissions
+See `.specify/tasks/infra-bootstrap.md` for detailed initialization instructions.
 
 ### Extensibility
 
@@ -140,6 +130,7 @@ This template is designed to be extended with:
 - Additional automation workflows
 - Custom task management integrations
 - Project-specific specifications
+- Infrastructure resources in `infra/main.tf` based on agent requirements
 
 ## Non-Functional Requirements
 

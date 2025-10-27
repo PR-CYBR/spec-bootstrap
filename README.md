@@ -38,6 +38,43 @@ This project will be released under the [MIT License](LICENSE).
   git clone https://github.com/PR-CYBR/spec-bootstrap.git  
   cd spec-bootstrap  
   ```  
+
+2. **Review the Constitution**  
+  ```bash  
+  cat .specify/constitution.md  
+  ```  
+
+3. **Explore the Specifications**  
+  ```bash  
+  cat .specify/spec.md  
+  ```  
+
+4. **Check the Implementation Plan**  
+  ```bash  
+  cat .specify/plan.md  
+  ```  
+
+5. **View Tasks**  
+  ```bash  
+  ls -la .specify/tasks/  
+  ```  
+
+6. **Initialize Terraform Infrastructure** (Optional)  
+  All repositories derived from this template include a baseline Terraform configuration for PR-CYBR agent standardization:
+  ```bash
+  cd infra
+  terraform init -backend=false
+  terraform validate
+  terraform plan -input=false -var-file=variables.tfvars
+  ```
+  
+  Before running these commands:
+  - Update `infra/variables.tfvars` with your agent-specific values
+  - Set sensitive values via environment variables (e.g., `export TF_VAR_dockerhub_user="username"`)
+  - See `.specify/tasks/infra-bootstrap.md` for detailed instructions
+  
+  **Note**: Derived projects inherit this baseline automatically for PR-CYBR agent alignment.
+
 ## Automated Provisioning  
 During initial provisioning of a new repository derived from this template, multiple draft pull requests are created to add the specification, plan and workflow files. Normally these PRs require manual review because branch protection rules on the default branch prevent automation from merging. To support fully autonomous initialization while preserving safety, this template includes an initial provisioning workflow (`initial-provision.yml`).  
 This workflow runs only once — when the repository has no prior commits or when triggered with `is_initial_provision` set to `true`. It will:  
@@ -77,7 +114,7 @@ When you create a new repository from this template:
 5. **View Tasks**  
   ```bash  
   ls -la .specify/tasks/  
-  ```  
+  ```
 
 ## Spec Kit Commands  
 The Spec Kit framework has a set of conceptual commands that are represented by files in this template:  

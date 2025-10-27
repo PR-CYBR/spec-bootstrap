@@ -1,30 +1,55 @@
-# Variable definitions for the infrastructure
-# These are automatically synchronized to Terraform Cloud during initial provisioning
+# PR-CYBR Agent Standard Variables
+# These variables align with the PR-CYBR agent-variables.tf standard
+# Values can be provided via variables.tfvars or environment variables (TF_VAR_*)
 
-variable "project_name" {
-  description = "Name of the project"
+variable "agent_id" {
+  description = "Unique identifier for the PR-CYBR agent"
   type        = string
-  default     = "spec-bootstrap"
+
+  validation {
+    condition     = can(regex("^[a-z0-9-]+$", var.agent_id))
+    error_message = "Agent ID must contain only lowercase letters, numbers, and hyphens."
+  }
+}
+
+variable "agent_role" {
+  description = "Role or function of the PR-CYBR agent (e.g., coordinator, executor, monitor)"
+  type        = string
+  default     = "agent"
+
+  validation {
+    condition     = length(var.agent_role) > 0
+    error_message = "Agent role must not be empty."
+  }
 }
 
 variable "environment" {
-  description = "Environment name (dev, stage, prod)"
+  description = "Deployment environment (dev, staging, prod)"
   type        = string
-  default     = "dev"
+
+  validation {
+    condition     = contains(["dev", "staging", "prod"], var.environment)
+    error_message = "Environment must be one of: dev, staging, prod."
+  }
 }
 
-variable "region" {
-  description = "Primary region for resources"
+variable "dockerhub_user" {
+  description = "DockerHub username for container registry access"
   type        = string
-  default     = "us-east-1"
+  sensitive   = true
+  default     = ""
 }
 
-# Example sensitive variable
-variable "api_token" {
-  description = "API token for external service"
+variable "notion_page_id" {
+  description = "Notion page ID for agent documentation and tracking"
   type        = string
   default     = ""
-  sensitive   = true
+
+  validation {
+    condition     = var.notion_page_id == "" || can(regex("^[a-f0-9]{32}$", var.notion_page_id))
+    error_message = "Notion page ID must be a 32-character hexadecimal string or empty."
+  }
 }
 
-# Add your project-specific variables below
+# Additional agent-specific variables can be added below
+# Follow the PR-CYBR naming conventions and include appropriate validation

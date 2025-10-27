@@ -1,37 +1,31 @@
-# Terraform Cloud Backend Configuration
-# This configuration is automatically set up during initial provisioning
+# Main Terraform Configuration for PR-CYBR Agent Infrastructure
+# This file contains the core infrastructure setup for PR-CYBR agents
 
-terraform {
-  required_version = ">= 1.0"
+# Terraform backend configuration
+# Uncomment and configure when ready to use remote state
+# Note: Backend configuration does not support variable interpolation
+# Replace the workspace name with your actual workspace name when enabling
+# terraform {
+#   backend "remote" {
+#     organization = "PR-CYBR"
+#     workspaces {
+#       name = "agent-your-agent-id-your-environment"
+#     }
+#   }
+# }
 
-  # Backend configuration will be managed by TFC
-  # The tfc-bootstrap workflow creates and configures the workspace
-  # Using 'cloud' block for Terraform 1.1+
-  cloud {
-    organization = "pr-cybr"
-    
-    workspaces {
-      # IMPORTANT: Update this to match your repository name
-      # The TFC bootstrap workflow creates a workspace with the same name as your repo
-      # For example, if your repo is "my-project", set name = "my-project"
-      name = "UPDATE_ME"
-    }
+# Example resource placeholder
+# Add your infrastructure resources here based on agent requirements
+# This template is intentionally minimal to remain flexible for various agent types
+
+resource "null_resource" "agent_config" {
+  triggers = {
+    agent_id    = var.agent_id
+    agent_role  = var.agent_role
+    environment = var.environment
   }
 
-  required_providers {
-    # Add your required providers here
-    # Example:
-    # random = {
-    #   source  = "hashicorp/random"
-    #   version = "~> 3.0"
-    # }
+  provisioner "local-exec" {
+    command = "echo 'Agent ${var.agent_id} configured for ${var.environment} environment'"
   }
 }
-
-# Main infrastructure resources
-# Add your infrastructure configuration here
-
-# Example resource (remove or replace with actual resources)
-# resource "random_id" "example" {
-#   byte_length = 8
-# }

@@ -1,17 +1,33 @@
-# Output values from the infrastructure
-# These are displayed after successful Terraform apply
+# Terraform Outputs for PR-CYBR Agent Infrastructure
+# These outputs provide key information about the deployed infrastructure
 
-# Example outputs (uncomment and modify as needed)
-# output "example_id" {
-#   description = "ID of the example resource"
-#   value       = random_id.example.hex
-# }
+output "agent_id" {
+  description = "The unique identifier for this PR-CYBR agent"
+  value       = var.agent_id
+}
 
-# output "project_info" {
-#   description = "Project configuration"
-#   value = {
-#     name        = var.project_name
-#     environment = var.environment
-#     region      = var.region
-#   }
+output "agent_role" {
+  description = "The role or function of this agent"
+  value       = var.agent_role
+}
+
+output "environment" {
+  description = "The deployment environment for this agent"
+  value       = var.environment
+}
+
+output "agent_config" {
+  description = "Combined agent configuration summary"
+  value = {
+    agent_id    = var.agent_id
+    agent_role  = var.agent_role
+    environment = var.environment
+  }
+}
+
+# Add additional outputs as needed for your agent infrastructure
+# Examples:
+# output "service_url" {
+#   description = "URL of the deployed agent service"
+#   value       = "https://${var.agent_id}.${var.environment}.pr-cybr.com"
 # }
