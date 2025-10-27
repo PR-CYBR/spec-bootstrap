@@ -171,31 +171,70 @@ tag_workspace() {
     done
 }
 
-# Parse variables from Terraform files
-parse_terraform_variables() {
-    local tf_dir="${1:-infra}"
+# Parse and sync variables from Terraform files
+sync_terraform_variables() {
+    local workspace_id="$1"
+    local tf_dir="${2:-infra}"
     
     if [ ! -d "$tf_dir" ]; then
         log_warn "Directory '$tf_dir' does not exist, skipping variable sync"
         return 0
     fi
     
-    log_info "Parsing variables from '$tf_dir'"
+    log_info "Syncing variables from '$tf_dir'"
     
-    # This is a simplified parser that looks for variable blocks
-    # In a production system, you'd use terraform show or similar
     local var_file="$tf_dir/variables.tf"
     local tfvars_file="$tf_dir/terraform.tfvars"
     
-    if [ -f "$var_file" ]; then
-        log_info "Found $var_file"
-        # Parse variable names (basic regex matching)
-        grep -E '^variable\s+"[^"]+"' "$var_file" | sed -E 's/variable\s+"([^"]+)".*/\1/' || true
+    if [ ! -f "$var_file" ]; then
+        log_warn "No variables.tf found, skipping variable sync"
+        return 0
     fi
     
+    log_info "Found $var_file"
+    
+    # Parse variable names from variables.tf
+    local var_names
+    var_names=$(grep -E '^variable\s+"[^"]+"' "$var_file" | sed -E 's/variable\s+"([^"]+)".*/\1/' || true)
+    
+    if [ -z "$var_names" ]; then
+        log_info "No variables found in $var_file"
+        return 0
+    fi
+    
+    # Parse values from terraform.tfvars if it exists
+    local tfvars_content=""
     if [ -f "$tfvars_file" ]; then
         log_info "Found $tfvars_file"
+        tfvars_content=$(cat "$tfvars_file")
     fi
+    
+    # Sync each variable
+    while IFS= read -r var_name; do
+        [ -z "$var_name" ] && continue
+        
+        # Try to get value from tfvars file
+        local var_value=""
+        if [ -n "$tfvars_content" ]; then
+            var_value=$(echo "$tfvars_content" | grep -E "^${var_name}\s*=" | sed -E "s/^${var_name}\s*=\s*\"?([^\"]*)\"?.*/\1/" | head -1 || echo "")
+        fi
+        
+        # Check if variable is marked as sensitive in variables.tf
+        local is_sensitive="false"
+        if grep -A 5 "^variable \"$var_name\"" "$var_file" | grep -q "sensitive.*=.*true"; then
+            is_sensitive="true"
+            log_info "Variable '$var_name' is marked as sensitive"
+        fi
+        
+        # Only sync variables that have values in tfvars
+        if [ -n "$var_value" ]; then
+            sync_variable "$workspace_id" "$var_name" "$var_value" "terraform" "$is_sensitive" "Synced from $tf_dir/terraform.tfvars"
+        else
+            log_info "Variable '$var_name' has no value in terraform.tfvars, skipping"
+        fi
+    done <<< "$var_names"
+    
+    log_info "Variable synchronization complete"
 }
 
 # Get existing workspace variables
@@ -330,8 +369,8 @@ main() {
     # Tag the workspace
     tag_workspace "$workspace_id"
     
-    # Parse and sync variables
-    parse_terraform_variables "infra"
+    # Sync variables from infra directory
+    sync_terraform_variables "$workspace_id" "infra"
     
     # Generate JSON summary for Codex
     local summary
