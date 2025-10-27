@@ -108,7 +108,8 @@ When ready to use Terraform Cloud for remote state:
 
 1. Edit `infra/main.tf`
 2. Uncomment the `terraform.backend` block
-3. Update the organization and workspace name
+3. Replace the workspace name placeholder with your actual workspace name (e.g., `agent-my-agent-id-dev`)
+   - Note: Backend configuration does not support variable interpolation
 4. Run `terraform init` (without `-backend=false`)
 5. Authenticate with Terraform Cloud when prompted
 

@@ -3,11 +3,13 @@
 
 # Terraform backend configuration
 # Uncomment and configure when ready to use remote state
+# Note: Backend configuration does not support variable interpolation
+# Replace the workspace name with your actual workspace name when enabling
 # terraform {
 #   backend "remote" {
 #     organization = "PR-CYBR"
 #     workspaces {
-#       name = "agent-${var.agent_id}-${var.environment}"
+#       name = "agent-your-agent-id-your-environment"
 #     }
 #   }
 # }
