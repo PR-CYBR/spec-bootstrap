@@ -28,5 +28,20 @@ jobs:
         run: |
           echo "Tasks:"
           find .specify/tasks -type f -print
+      - name: Check Terraform configuration exists
+        run: |
+          if [ -d "infra" ]; then
+            echo "✓ Terraform infrastructure directory found"
+            required_tf_files=(infra/main.tf infra/variables.tf infra/variables.tfvars infra/providers.tf infra/outputs.tf)
+            for file in "${required_tf_files[@]}"; do
+              if [ ! -f "$file" ]; then
+                echo "⚠ Terraform file missing: $file" >&2
+              else
+                echo "✓ Found: $file"
+              fi
+            done
+          else
+            echo "⚠ Terraform infrastructure directory not found" >&2
+          fi
       - name: Summary
         run: echo "Spec-Kit validation complete."
