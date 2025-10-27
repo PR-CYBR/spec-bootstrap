@@ -13,10 +13,21 @@ This directory contains Terraform configuration files for infrastructure provisi
 
 When this repository is created from the spec-bootstrap template, the initial provisioning workflow automatically:
 
-1. Creates a Terraform Cloud workspace for this repository
+1. Creates a Terraform Cloud workspace for this repository (same name as the repo)
 2. Synchronizes variables defined in `variables.tf` and `terraform.tfvars`
 3. Tags the workspace with "spec-bootstrap" and the repository name
 4. Links the workspace to the PR-CYBR organization
+
+**Important:** After the TFC workspace is created, update the workspace name in `main.tf`:
+
+```hcl
+cloud {
+  organization = "pr-cybr"
+  workspaces {
+    name = "your-repo-name"  # Update this to match your repository name
+  }
+}
+```
 
 ## Usage
 

@@ -6,14 +6,15 @@ terraform {
 
   # Backend configuration will be managed by TFC
   # The tfc-bootstrap workflow creates and configures the workspace
-  # Using 'cloud' block instead of 'backend' for Terraform 1.1+
+  # Using 'cloud' block for Terraform 1.1+
   cloud {
     organization = "pr-cybr"
     
     workspaces {
-      # This will be set to the repository name
-      # Replace 'spec-bootstrap' with your actual workspace name after creation
-      name = "spec-bootstrap"
+      # IMPORTANT: Update this to match your repository name
+      # The TFC bootstrap workflow creates a workspace with the same name as your repo
+      # For example, if your repo is "my-project", set name = "my-project"
+      name = "UPDATE_ME"
     }
   }
 

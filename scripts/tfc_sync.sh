@@ -216,12 +216,17 @@ sync_terraform_variables() {
         # Try to get value from tfvars file
         local var_value=""
         if [ -n "$tfvars_content" ]; then
-            var_value=$(echo "$tfvars_content" | grep -E "^${var_name}\s*=" | sed -E "s/^${var_name}\s*=\s*\"?([^\"]*)\"?.*/\1/" | head -1 || echo "")
+            # First try to extract quoted values
+            var_value=$(echo "$tfvars_content" | grep -E "^\s*${var_name}\s*=" | sed -E 's/^[^=]*=\s*"([^"]*)".*/\1/' | head -1 || echo "")
+            # If empty, try unquoted values
+            if [ -z "$var_value" ]; then
+                var_value=$(echo "$tfvars_content" | grep -E "^\s*${var_name}\s*=" | sed -E 's/^[^=]*=\s*([^#\s]+).*/\1/' | head -1 || echo "")
+            fi
         fi
         
         # Check if variable is marked as sensitive in variables.tf
         local is_sensitive="false"
-        if grep -A 5 "^variable \"$var_name\"" "$var_file" | grep -q "sensitive.*=.*true"; then
+        if grep -A 10 "^variable \"$var_name\"" "$var_file" | grep -E "^\s*sensitive\s*=\s*true" > /dev/null 2>&1; then
             is_sensitive="true"
             log_info "Variable '$var_name' is marked as sensitive"
         fi
