@@ -16,6 +16,12 @@ This document contains the technical specifications for projects built using thi
 ├── .github/
 │   └── workflows/
 │       └── spec-kit.yml  # Automation workflow
+├── infra/                # Terraform infrastructure configuration
+│   ├── main.tf           # Main Terraform configuration
+│   ├── variables.tf      # Variable definitions
+│   ├── variables.tfvars  # Variable values template
+│   ├── providers.tf      # Provider configurations
+│   └── outputs.tf        # Output definitions
 └── README.md             # Project documentation
 ```
 
@@ -84,6 +90,39 @@ Each branch in the comprehensive branching scheme has dedicated workflows:
 - `auto-pr-prod-to-pages.yml`: Updates documentation from production
 - `auto-pr-codex-to-pages.yml`: Publishes knowledge base to documentation
 
+### Infrastructure as Code
+
+All repositories derived from this template include a baseline Terraform configuration in the `infra/` directory. This provides:
+
+#### PR-CYBR Agent Standardization
+- Consistent variable schema across all PR-CYBR agents
+- Standard variables: `agent_id`, `agent_role`, `environment`, `dockerhub_user`, `notion_page_id`
+- Alignment with PR-CYBR `agent-variables.tf` specification
+
+#### Terraform Configuration Structure
+- **main.tf**: Core infrastructure configuration with commented backend block
+- **variables.tf**: Variable definitions with validation rules
+- **variables.tfvars**: Template with placeholder values (safe to commit)
+- **providers.tf**: Provider configurations (Terraform Cloud, GitHub) ready for initialization
+- **outputs.tf**: Standardized outputs for agent identification and connection info
+
+#### Security and Best Practices
+- Sensitive values injected via environment variables (`TF_VAR_*`)
+- No secrets or environment-specific data in version control
+- Backend configuration commented out by default for safe initialization
+- Validation rules ensure data consistency
+
+#### Initialization Workflow
+```bash
+cd infra
+terraform init -backend=false
+terraform fmt
+terraform validate
+terraform plan -input=false -var-file=variables.tfvars
+```
+
+See `.specify/tasks/infra-bootstrap.md` for detailed initialization instructions.
+
 ### Extensibility
 
 This template is designed to be extended with:
@@ -91,6 +130,7 @@ This template is designed to be extended with:
 - Additional automation workflows
 - Custom task management integrations
 - Project-specific specifications
+- Infrastructure resources in `infra/main.tf` based on agent requirements
 
 ## Non-Functional Requirements
 

@@ -28,6 +28,22 @@ logs/
 .env.local
 .env.*.local
 
+# Terraform files
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+.terraform/
+.terraform.lock.hcl
+*.tfvars.backup
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+
 # Common build output directories (add more as needed for your stack)
 /build/
 /dist/
