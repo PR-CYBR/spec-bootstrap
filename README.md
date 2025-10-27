@@ -45,8 +45,23 @@ This workflow runs only once — when the repository has no prior commits or whe
 - Temporarily disable branch protection on the default branch using the GitHub API.  
 - Mark any draft bootstrap pull requests as ready for review and merge them automatically.  
 - Reapply the previous branch protection settings immediately after the merges.  
+- Provision Terraform Cloud workspace (if `TFC_TOKEN` is configured).
 - Add a `bootstrap-complete` tag or commit annotation for auditability.  
 If automation is disabled or fails, you may still perform the first merge manually by approving the draft PRs. After the initial provisioning completes, the regular CI/CD workflows and branch protections govern subsequent development as usual. 
+
+### Terraform Cloud Auto-Setup
+When you create a new repository from this template:
+- The Spec-Bootstrap system automatically provisions a TFC workspace during initial provisioning.
+- It synchronizes baseline variables from `/infra` to Terraform Cloud.
+- The workspace is tagged with "spec-bootstrap" and the repository name.
+- Secrets and API tokens are never stored in code — only injected via TFC or GitHub Secrets.
+
+**Setup Requirements:**
+1. Add a `TFC_TOKEN` secret to your repository (Settings → Secrets and variables → Actions).
+2. Generate the token from Terraform Cloud: User Settings → Tokens → Create an API token.
+3. The initial provisioning workflow will automatically create and configure your workspace.
+
+**Note:** If `TFC_TOKEN` is not configured, the TFC bootstrap step will be skipped with a warning. You can add the token later and manually trigger the `tfc-bootstrap.yml` workflow.
 2. **Review the Constitution**  
   ```bash  
   cat .specify/constitution.md  

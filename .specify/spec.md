@@ -84,6 +84,55 @@ Each branch in the comprehensive branching scheme has dedicated workflows:
 - `auto-pr-prod-to-pages.yml`: Updates documentation from production
 - `auto-pr-codex-to-pages.yml`: Publishes knowledge base to documentation
 
+#### Infrastructure Workflows
+- `tfc-bootstrap.yml`: Automatically provisions and configures Terraform Cloud workspaces during initial repository setup
+
+### Terraform Cloud Sync
+
+The template includes automated Terraform Cloud integration to streamline infrastructure provisioning:
+
+#### Purpose
+Automatically create and configure a Terraform Cloud workspace for new repositories derived from this template.
+
+#### Components
+1. **Workflow**: `.github/workflows/tfc-bootstrap.yml`
+   - Triggered during initial provisioning
+   - Can be manually invoked via workflow_dispatch
+   - Gracefully handles missing TFC_TOKEN with warnings
+
+2. **Script**: `scripts/tfc_sync.sh`
+   - Authenticates with Terraform Cloud API
+   - Creates or updates workspace
+   - Synchronizes variables from `infra/` directory
+   - Tags workspace with "spec-bootstrap" and repository name
+   - Generates JSON summary for auditability
+
+3. **Infrastructure Baseline**: `infra/` directory
+   - `main.tf`: Terraform configuration with remote backend
+   - `variables.tf`: Variable definitions
+   - `terraform.tfvars`: Default variable values (non-sensitive)
+   - `outputs.tf`: Output definitions
+   - `README.md`: Infrastructure documentation
+
+#### Workflow Integration
+The TFC bootstrap is integrated into `initial-provision.yml`:
+- Runs after branch protection is temporarily relaxed
+- Executes after bootstrap PRs are merged
+- Completes before branch protection is reinstated
+- Requires `TFC_TOKEN` secret for API authentication
+
+#### Variable Synchronization
+Variables are synchronized following these conventions:
+- Variables from `variables.tf` → `terraform` category in TFC
+- `TF_VAR_*` environment variables → `env` category in TFC
+- Sensitive variables marked with `sensitive = true` are properly protected
+- Descriptions from Terraform files are preserved in TFC
+
+#### Security
+- API tokens stored as GitHub Secrets (never in code)
+- Sensitive variable values managed in TFC, not in repository
+- Workspace access controlled via TFC organization permissions
+
 ### Extensibility
 
 This template is designed to be extended with:
